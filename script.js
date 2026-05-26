@@ -20,16 +20,16 @@ btnPortal.addEventListener('click', async () => {
 
     // console.log(cards)
 
-    cards.forEach((dados) => forEachDosCards(dados, ladoCima, 'lado-cima'))
-    cardsBaixo.forEach((dados) => forEachDosCards(dados, ladoBaixo, 'lado-baixo'))
+    cards.forEach((dados) => forEachDosCards(dados, ladoCima))
+    cardsBaixo.forEach((dados) => forEachDosCards(dados, ladoBaixo))
 
 
     loader.classList.add('hidden')
 })
 
 
-async function teste(e, onde){
-    const classe = `#${onde} .card-${e}`
+async function teste(e,){
+    const classe = `.card-${e}`
     const card = document.querySelector(classe)
     card.style.color = 'red'
 
@@ -40,9 +40,9 @@ async function teste(e, onde){
 }
 
 
-const forEachDosCards = (dados, lado, onde) => {
+const forEachDosCards = (dados, lado) => {
     lado.innerHTML += `
-        <div class="char-card card-${dados.id}" onClick="teste(${dados.id}, ${onde})">
+        <div class="char-card card-${dados.id}" onClick="teste(${dados.id})">
             <img src="${dados.image}" alt="${dados.name}">
             <div class="char-info">
                 <h3 class="font-bold text-xl text-lime-400">${dados.name}</h3>
