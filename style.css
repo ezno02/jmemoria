@@ -4,6 +4,10 @@
     padding: 0;
 }
 
+.vitoria {
+    color: pink;
+}
+
 .hidden {
     display: none !important;
 }
@@ -80,4 +84,8 @@ body {
 
 .char-info {
     padding: 1rem;
+}
+
+[data-clicked="true"] {
+    color: red;
 }

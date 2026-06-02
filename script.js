@@ -2,8 +2,10 @@ const btnPortal = document.getElementById('btn-portal')
 const loader = document.getElementById('loader')
 const ladoCima = document.getElementById('lado-cima')
 const ladoBaixo = document.getElementById('lado-baixo')
+const body = document.getElementsByTagName('body')
 let cards = []
 let ultimoCardAberto = null
+let testeVitoria = 0
 
 btnPortal.addEventListener('click', async () => {
     ladoBaixo.innerHTML = ''
@@ -27,30 +29,66 @@ btnPortal.addEventListener('click', async () => {
     loader.classList.add('hidden')
 })
 
-
-async function teste(e,){
-    const classe = `.card-${e}`
-    const card = document.querySelector(classe)
-    card.style.color = 'red'
-
-    if (ultimoCardAberto === e) {
-        
-    }
-
-}
-
-
 const forEachDosCards = (dados, lado) => {
     lado.innerHTML += `
-        <div class="char-card card-${dados.id}" onClick="teste(${dados.id})">
+        <div class="char-card card-${dados.id}" data-key="${dados.id}">
             <img src="${dados.image}" alt="${dados.name}">
-            <div class="char-info">
+            <div class="char-info" data-key="${dados.id}">
                 <h3 class="font-bold text-xl text-lime-400">${dados.name}</h3>
                 <p class="text-sm  text-slate-300">Status: ${dados.status}</p>
                 <p class="text-sm text-slate-300">Espécie: ${dados.species}</p>
             </div>
         </div>`
 }
+
+function testadorDeVitoria() {
+    testeVitoria++
+    if (testeVitoria == 4) {
+        body.classList.add ='vitoria'
+        console.log('ganohu')
+    }
+}
+
+ladoCima.addEventListener('click', (event) => {
+    const cardClicado = event.target.closest('div')
+    cardClicado.dataset.clicked = true
+    if (!ultimoCardAberto) {
+        ultimoCardAberto = cardClicado
+        console.log(ultimoCardAberto)
+    } else if (ultimoCardAberto.getAttribute('data-key') === cardClicado.getAttribute('data-key')) {
+        ultimoCardAberto = null
+        testadorDeVitoria()
+    } else {
+        setTimeout(() => {
+            ultimoCardAberto.dataset.clicked = false
+            cardClicado.dataset.clicked = false
+            ultimoCardAberto = null
+        }, 1000);
+    }
+})
+
+ladoBaixo.addEventListener('click', (event) => {
+    const cardClicado = event.target.closest('div')
+    cardClicado.dataset.clicked = true
+    if (ultimoCardAberto) {
+        if(ultimoCardAberto.getAttribute('data-key') === cardClicado.getAttribute('data-key')) {
+            console.log('deu bom')
+            ultimoCardAberto = null
+            testadorDeVitoria()
+        } else {
+            // console.log('deu bom, ou nao')
+            setTimeout(() => {
+                console.log(ultimoCardAberto)
+                ultimoCardAberto.dataset.clicked = false
+                cardClicado.dataset.clicked = false
+                ultimoCardAberto = null
+            }, 1000);
+        }
+    } else {
+        ultimoCardAberto = cardClicado
+    }
+})
+
 
 
 
