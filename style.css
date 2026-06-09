@@ -4,26 +4,39 @@
     padding: 0;
 }
 
-.vitoria {
-    color: pink;
-}
-
 .hidden {
     display: none !important;
 }
 
+button {
+    border: none;
+    padding: 6px;
+}
+
 body {
     background-color: #162133;
-    height: 100vh;
-
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .container {
-    height: 70%;
+    min-height: 70%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
+    gap: 10px;
+}
+
+#btn-portal {
+    background-color: #84cc16;
+    box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.2);
+}
+
+#btn-portal:hover {
+    box-shadow: 0 1px 6px 4px;
 }
 
 #resultado-api {
@@ -42,7 +55,7 @@ body {
 .title-api {
     text-transform: uppercase;
     font-size: 1rem;
-    font-family: Verdana,'Segoe UI', Tahoma, Geneva, sans-serif;
+    font-family: Verdana, 'Segoe UI', Tahoma, Geneva, sans-serif;
     color: #c0c0d0ec;
     text-align: center;
 }
@@ -61,6 +74,7 @@ body {
     0% {
         transform: rotate(0deg);
     }
+
     100% {
         transform: rotate(360deg);
     }
@@ -75,6 +89,7 @@ body {
     text-align: center;
     max-width: 300px;
     margin: 0 auto;
+    position: relative;
 }
 
 .char-card img {
@@ -86,6 +101,56 @@ body {
     padding: 1rem;
 }
 
+.back-card {
+    background-color: #84cc16;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    transition-duration: 200ms;
+}
+
+.back-card:hover {
+    background-color: #1fd10f;
+}
+
 [data-clicked="true"] {
-    color: red;
+    display: none;
+}
+
+.ganhou {
+    display: none;
+}
+
+.vitoria .ganhou {
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.ganhou .content {
+    width: 50%;
+    height: 70%;
+    background-color: #aed10f;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+}
+
+.ganhou .content button {
+    background-color: #162133;
+    color: #f0f0f0;
+    border-radius: 3px;
+    box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.2);
+}
+
+.ganhou .content button:hover {
+    box-shadow: 0 0 2px 2px rgba(255, 255, 255, 0.425);
 }

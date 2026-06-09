@@ -2,17 +2,21 @@ const btnPortal = document.getElementById('btn-portal')
 const loader = document.getElementById('loader')
 const ladoCima = document.getElementById('lado-cima')
 const ladoBaixo = document.getElementById('lado-baixo')
-const body = document.getElementsByTagName('body')
+const btnPlayAgn = document.getElementById('play-agn-btn')
+const body = document.body
 let cards = []
 let ultimoCardAberto = null
 let testeVitoria = 0
+let pessaVirada = false
 
-btnPortal.addEventListener('click', async () => {
+async function resetGame() {
+    cards = []
+    testeVitoria = 0
     ladoBaixo.innerHTML = ''
     ladoCima.innerHTML = ''
+    body.classList.remove('vitoria')
     loader.classList.remove('hidden')
 
-    // aquui
 
     for (let i = 0; i < 4; i++) {
         await requisicao()
@@ -27,7 +31,11 @@ btnPortal.addEventListener('click', async () => {
 
 
     loader.classList.add('hidden')
-})
+}
+
+btnPortal.addEventListener('click', async () => await resetGame())
+
+btnPlayAgn.addEventListener('click', async () => await resetGame())
 
 const forEachDosCards = (dados, lado) => {
     lado.innerHTML += `
@@ -38,54 +46,68 @@ const forEachDosCards = (dados, lado) => {
                 <p class="text-sm  text-slate-300">Status: ${dados.status}</p>
                 <p class="text-sm text-slate-300">Espécie: ${dados.species}</p>
             </div>
+            <div class="back-card" data-key="${dados.id}"></div>
         </div>`
 }
 
 function testadorDeVitoria() {
     testeVitoria++
     if (testeVitoria == 4) {
-        body.classList.add ='vitoria'
-        console.log('ganohu')
+        body.classList.add('vitoria')
+        // console.log('ganohu')
+
     }
 }
 
 ladoCima.addEventListener('click', (event) => {
-    const cardClicado = event.target.closest('div')
-    cardClicado.dataset.clicked = true
-    if (!ultimoCardAberto) {
-        ultimoCardAberto = cardClicado
-        console.log(ultimoCardAberto)
-    } else if (ultimoCardAberto.getAttribute('data-key') === cardClicado.getAttribute('data-key')) {
-        ultimoCardAberto = null
-        testadorDeVitoria()
-    } else {
-        setTimeout(() => {
-            ultimoCardAberto.dataset.clicked = false
-            cardClicado.dataset.clicked = false
-            ultimoCardAberto = null
-        }, 1000);
+    if (!pessaVirada) {
+        const cardClicado = event.target.closest('.back-card')
+        if (cardClicado.classList == 'back-card') {
+            cardClicado.dataset.clicked = true
+            if (!ultimoCardAberto) {
+                ultimoCardAberto = cardClicado
+                console.log(ultimoCardAberto)
+            } else if (ultimoCardAberto.getAttribute('data-key') === cardClicado.getAttribute('data-key')) {
+                ultimoCardAberto = null
+                testadorDeVitoria()
+            } else {
+                pessaVirada = true
+                setTimeout(() => {
+                    ultimoCardAberto.dataset.clicked = false
+                    cardClicado.dataset.clicked = false
+                    ultimoCardAberto = null
+                    pessaVirada = false
+                }, 1000);
+            }
+        }
     }
 })
 
 ladoBaixo.addEventListener('click', (event) => {
-    const cardClicado = event.target.closest('div')
-    cardClicado.dataset.clicked = true
-    if (ultimoCardAberto) {
-        if(ultimoCardAberto.getAttribute('data-key') === cardClicado.getAttribute('data-key')) {
-            console.log('deu bom')
-            ultimoCardAberto = null
-            testadorDeVitoria()
-        } else {
-            // console.log('deu bom, ou nao')
-            setTimeout(() => {
-                console.log(ultimoCardAberto)
-                ultimoCardAberto.dataset.clicked = false
-                cardClicado.dataset.clicked = false
-                ultimoCardAberto = null
-            }, 1000);
+    if (!pessaVirada) {
+        const cardClicado = event.target.closest('div')
+        if (cardClicado.classList == 'back-card') {
+            cardClicado.dataset.clicked = true
+            if (ultimoCardAberto) {
+                if (ultimoCardAberto.getAttribute('data-key') === cardClicado.getAttribute('data-key')) {
+                    console.log('deu bom')
+                    ultimoCardAberto = null
+                    testadorDeVitoria()
+                } else {
+                    // console.log('deu bom, ou nao')
+                    pessaVirada = true
+                    setTimeout(() => {
+                        console.log(ultimoCardAberto)
+                        ultimoCardAberto.dataset.clicked = false
+                        cardClicado.dataset.clicked = false
+                        ultimoCardAberto = null
+                        pessaVirada = false
+                    }, 1000);
+                }
+            } else {
+                ultimoCardAberto = cardClicado
+            }
         }
-    } else {
-        ultimoCardAberto = cardClicado
     }
 })
 
