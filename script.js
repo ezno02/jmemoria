@@ -1,7 +1,7 @@
 const btnPortal = document.getElementById('btn-portal')
 const loader = document.getElementById('loader')
-const ladoCima = document.getElementById('lado-cima')
-const ladoBaixo = document.getElementById('lado-baixo')
+const ladoCima = document.getElementById('resultado-api')
+// const ladoBaixo = document.getElementById('lado-baixo')
 const btnPlayAgn = document.getElementById('play-agn-btn')
 const body = document.body
 let cards = []
@@ -9,25 +9,38 @@ let ultimoCardAberto = null
 let testeVitoria = 0
 let pessaVirada = false
 
+
+
+
+resetGame()
+
 async function resetGame() {
     cards = []
     testeVitoria = 0
-    ladoBaixo.innerHTML = ''
     ladoCima.innerHTML = ''
     body.classList.remove('vitoria')
     loader.classList.remove('hidden')
 
 
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 10; i++) {
         await requisicao()
     }
 
-    const cardsBaixo = [...cards].sort(() => Math.random() - 0.5)
+    cards = [...cards, ...cards].sort(() => Math.random() - 0.5)
 
     // console.log(cards)
 
-    cards.forEach((dados) => forEachDosCards(dados, ladoCima))
-    cardsBaixo.forEach((dados) => forEachDosCards(dados, ladoBaixo))
+    cards.forEach((dados) => {
+        ladoCima.innerHTML += `
+        <div class="char-card card-${dados.id}" data-key="${dados.id}">
+            <img src="${dados.imagem}" alt="${dados.name}">
+            <div class="char-info" data-key="${dados.id}">
+                <h3 class="font-bold text-xl text-lime-400">${dados.name}</h3>
+            </div>
+            <div class="back-card" data-key="${dados.id}"></div>
+            <div class="carta-desvirada"></div>
+        </div>`
+    })
 
 
     loader.classList.add('hidden')
@@ -37,22 +50,9 @@ btnPortal.addEventListener('click', async () => await resetGame())
 
 btnPlayAgn.addEventListener('click', async () => await resetGame())
 
-const forEachDosCards = (dados, lado) => {
-    lado.innerHTML += `
-        <div class="char-card card-${dados.id}" data-key="${dados.id}">
-            <img src="${dados.image}" alt="${dados.name}">
-            <div class="char-info" data-key="${dados.id}">
-                <h3 class="font-bold text-xl text-lime-400">${dados.name}</h3>
-                <p class="text-sm  text-slate-300">Status: ${dados.status}</p>
-                <p class="text-sm text-slate-300">Espécie: ${dados.species}</p>
-            </div>
-            <div class="back-card" data-key="${dados.id}"></div>
-        </div>`
-}
-
 function testadorDeVitoria() {
     testeVitoria++
-    if (testeVitoria == 4) {
+    if (testeVitoria == 10) {
         body.classList.add('vitoria')
         // console.log('ganohu')
 
@@ -68,6 +68,9 @@ ladoCima.addEventListener('click', (event) => {
                 ultimoCardAberto = cardClicado
                 console.log(ultimoCardAberto)
             } else if (ultimoCardAberto.getAttribute('data-key') === cardClicado.getAttribute('data-key')) {
+                ultimoCardAberto.classList.add('carta-revelada')
+                cardClicado.classList.add('carta-revelada')
+                console.log(cardClicado)
                 ultimoCardAberto = null
                 testadorDeVitoria()
             } else {
@@ -83,48 +86,25 @@ ladoCima.addEventListener('click', (event) => {
     }
 })
 
-ladoBaixo.addEventListener('click', (event) => {
-    if (!pessaVirada) {
-        const cardClicado = event.target.closest('div')
-        if (cardClicado.classList == 'back-card') {
-            cardClicado.dataset.clicked = true
-            if (ultimoCardAberto) {
-                if (ultimoCardAberto.getAttribute('data-key') === cardClicado.getAttribute('data-key')) {
-                    console.log('deu bom')
-                    ultimoCardAberto = null
-                    testadorDeVitoria()
-                } else {
-                    // console.log('deu bom, ou nao')
-                    pessaVirada = true
-                    setTimeout(() => {
-                        console.log(ultimoCardAberto)
-                        ultimoCardAberto.dataset.clicked = false
-                        cardClicado.dataset.clicked = false
-                        ultimoCardAberto = null
-                        pessaVirada = false
-                    }, 1000);
-                }
-            } else {
-                ultimoCardAberto = cardClicado
-            }
-        }
-    }
-})
-
-
-
 
 async function requisicao() {
     try {
-        const idAleatorio = Math.floor(Math.random() * 826) + 1
+        const idAleatorio = Math.floor(Math.random() * 1025) + 1
 
-        const resposta = await fetch(`https://rickandmortyapi.com/api/character/${idAleatorio}`)
+        const resposta = await fetch(`https://pokeapi.co/api/v2/pokemon/${idAleatorio}`)
 
         const dados = await resposta.json()
 
-        cards = [...cards, dados]
+        const pokemon = {
+            id: dados.id,
+            name: dados.name,
+            imagem: dados.sprites.other['official-artwork'].front_default,
+            tipo: dados.types[0].type.name
+        }
 
-        console.log(cards)
+        cards = [...cards, pokemon]
+
+        // console.log(cards)
 
     } catch (erro) {
         loader.classList.add('hidden')

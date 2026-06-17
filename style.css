@@ -1,3 +1,53 @@
+:root {
+    /* Tons de Slate (Cinza Azulado) */
+    --slate-50: #f8fafc;
+    --slate-100: #f1f5f9;
+    --slate-200: #e2e8f0;
+    --slate-300: #cbd5e1;
+    --slate-400: #94a3b8;
+    --slate-500: #64748b;
+    --slate-600: #475569;
+    --slate-700: #334155;
+    --slate-800: #1e293b;
+    /* Adicionado para textos escuros */
+
+    /* Tons de Verde (Emerald / Green) */
+    --emerald-100: #d1fae5;
+    /* Adicionado para o fundo da badge ativa */
+    --emerald-600: #059669;
+    --emerald-700: #047857;
+    --green-600: #16a34a;
+    /* Adicionado para toast de sucesso */
+
+    /* Tons de Azul e Indigo */
+    --indigo-500: #6366f1;
+    --indigo-600: #4f46e5;
+    --indigo-700: #4338ca;
+    --indigo-800: #3730a3;
+    --blue-50: #eff6ff;
+    /* Adicionado para fundo do botão de editar */
+    --blue-600: #2563eb;
+    /* Adicionado para cor do botão de editar e toast info */
+
+    /* Tons de Vermelho e Rosa */
+    --red-50: #fef2f2;
+    /* Adicionado para fundo do botão excluir */
+    --red-500: #ef4444;
+    --red-600: #dc2626;
+    /* Adicionado para cor do botão excluir */
+    --rose-100: #ffe4e6;
+    /* Adicionado para fundo da badge inativa */
+    --rose-600: #e11d48;
+    /* Adicionado para toast de erro */
+    --rose-700: #be123c;
+    /* Adicionado para cor do texto da badge inativa */
+
+    /* Neutras e Efeitos */
+    --white: #ffffff;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -14,7 +64,7 @@ button {
 }
 
 body {
-    background-color: #162133;
+    background-color: var(--slate-800);
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -40,17 +90,12 @@ body {
 }
 
 #resultado-api {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
     gap: 15px;
-    padding: 15px 100px;
+    padding: 15px 40px;
 }
 
-#lado-cima,
-#lado-baixo {
-    display: flex;
-    gap: 15px;
-}
 
 .title-api {
     text-transform: uppercase;
@@ -82,27 +127,26 @@ body {
 
 .char-card {
     background-color: #1e293b;
-    border: 2px solid #84cc16;
+    border: 3px solid var(--slate-600);
     border-radius: 0.75rem;
     overflow: hidden;
     color: white;
     text-align: center;
-    max-width: 300px;
+    /* max-width: 300px; */
     margin: 0 auto;
     position: relative;
 }
 
 .char-card img {
-    width: 100%;
-    border-bottom: 2px solid #84cc16;
+    width: 30%;
 }
 
 .char-info {
-    padding: 1rem;
+    padding: 0.3rem;
 }
 
 .back-card {
-    background-color: #84cc16;
+    background-color: var(--slate-700);
     position: absolute;
     top: 0;
     left: 0;
@@ -113,6 +157,17 @@ body {
 
 .back-card:hover {
     background-color: #1fd10f;
+}
+
+.char-card:has(.carta-revelada) .carta-desvirada {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: var(--emerald-700);
+    border: solid 3px var(--emerald-600);
+    transition-duration: 1s;
 }
 
 [data-clicked="true"] {
@@ -132,6 +187,7 @@ body {
     align-items: center;
     background-color: rgba(0, 0, 0, 0.5);
 }
+
 .ganhou .content {
     width: 50%;
     height: 70%;
