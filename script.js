@@ -1,4 +1,4 @@
-const btnPortal = document.getElementById('btn-portal')
+import { get_ranking, post_ranking } from './script_db.js';
 const loader = document.getElementById('loader')
 const ladoCima = document.getElementById('resultado-api')
 // const ladoBaixo = document.getElementById('lado-baixo')
@@ -8,8 +8,10 @@ let cards = []
 let ultimoCardAberto = null
 let testeVitoria = 0
 let pessaVirada = false
-
-
+const start = document.getElementById('start')
+const inputName = document.getElementById('input-name')
+const btnName = document.getElementById('btn-name')
+let nomePlayer = ''
 
 
 resetGame()
@@ -46,9 +48,15 @@ async function resetGame() {
     loader.classList.add('hidden')
 }
 
-btnPortal.addEventListener('click', async () => await resetGame())
-
 btnPlayAgn.addEventListener('click', async () => await resetGame())
+
+btnName.addEventListener('click', () => {
+    if (inputName.value){
+        nomePlayer = inputName.value
+        start.classList.add('hidden')
+    }
+
+})
 
 function testadorDeVitoria() {
     testeVitoria++
@@ -101,6 +109,8 @@ async function requisicao() {
             imagem: dados.sprites.other['official-artwork'].front_default,
             tipo: dados.types[0].type.name
         }
+
+        console.log(pokemon)
 
         cards = [...cards, pokemon]
 

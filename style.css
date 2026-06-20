@@ -80,29 +80,11 @@ body {
     gap: 10px;
 }
 
-#btn-portal {
-    background-color: #84cc16;
-    box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.2);
-}
-
-#btn-portal:hover {
-    box-shadow: 0 1px 6px 4px;
-}
-
 #resultado-api {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 15px;
     padding: 15px 40px;
-}
-
-
-.title-api {
-    text-transform: uppercase;
-    font-size: 1rem;
-    font-family: Verdana, 'Segoe UI', Tahoma, Geneva, sans-serif;
-    color: #c0c0d0ec;
-    text-align: center;
 }
 
 .portal-loader {
@@ -139,6 +121,8 @@ body {
 
 .char-card img {
     width: 30%;
+    border-radius: 0.6rem;
+    padding: 2px;
 }
 
 .char-info {
@@ -172,6 +156,53 @@ body {
 
 [data-clicked="true"] {
     display: none;
+}
+
+#start {
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+#start .content {
+    border-radius: 0.6rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2.5rem;
+    padding: 10px;
+    background-color: var(--slate-800);
+    color: var(--slate-500);
+}
+
+#start .content .top {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+#start .content .top img {
+    width: 50%;
+}
+
+#start .content .top h2 {
+    /* nao tem a cor dos textos amarelos na palheta de cores */
+    color: rgba(202, 202, 5, 0.934);
+    font-size: 2rem;
+}
+
+#start .content .bottom {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
 }
 
 .ganhou {
