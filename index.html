@@ -16,14 +16,20 @@
             <p>Sincronizando dimensão...</p>
         </div>
 
+        <div class="hidden" id="hud">
+            <div id="hud-nome"></div>
+            <div id="hud-timer"></div>
+            <div id="hud-pares"></div>
+        </div>
+
         <div id="resultado-api">
         </div>
     </div>
 
-    <div id="start">
+    <div id="tela-inicial">
         <div class="content">
             <div class="top">
-                <img src="https://www.freeiconspng.com/thumbs/pokeball-png/pokeball-picture-6.png" alt="imagem pokebola">
+                <img src="" alt="imagem que não tem na prova(pokebola)">
                 <h2>POKÉMON</h2>
                 <h3>Memory Game</h3>
             </div>
@@ -35,9 +41,23 @@
         </div>
     </div>
 
-    <div class="ganhou">
+    <div id="tela-final">
         <div class="content">
-            <h2>Parabéns Você Ganhou!</h2>
+            <img src="" alt="imagem que não tem na prova(trofeu)">
+            <h2>Você Venceu!</h2>
+            <span id="pontuacao-ranking">pontos</span>
+            <span id="tempo-ranking">tempo</span>
+            <table id="tabela-ranking">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Jogador</th>
+                        <th>PTS</th>
+                        <th>Tempo</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-ranking"></tbody>
+            </table>
             <button id="play-agn-btn">Jogar Novamente</button>
         </div>
     </div>

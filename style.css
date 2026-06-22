@@ -72,19 +72,38 @@ body {
 }
 
 .container {
-    min-height: 70%;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-around;
+    justify-content: center;
     gap: 10px;
 }
 
-#resultado-api {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 15px;
-    padding: 15px 40px;
+#hud {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    width: 95vw;
+    /* height: 50px; */
+    background-color: var(--slate-700);
+    border-radius: 0.6rem;
+    font-size: 1.4rem;
+}
+
+#hud-nome {
+    color: var(--emerald-100);
+}
+
+#hud-timer {
+    /* nao tem a cor */
+    color: var(--indigo-500);
+}
+
+#hud-pares {
+    /* tambem nao tem */
+    color: var(--indigo-500);
 }
 
 .portal-loader {
@@ -105,6 +124,13 @@ body {
     100% {
         transform: rotate(360deg);
     }
+}
+
+#resultado-api {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 15px;
+    padding: 15px 40px;
 }
 
 .char-card {
@@ -158,7 +184,7 @@ body {
     display: none;
 }
 
-#start {
+#tela-inicial {
     position: absolute;
     height: 100vh;
     width: 100vw;
@@ -168,7 +194,7 @@ body {
     background-color: rgba(0, 0, 0, 0.5);
 }
 
-#start .content {
+#tela-inicial .content {
     border-radius: 0.6rem;
     display: flex;
     flex-direction: column;
@@ -180,7 +206,7 @@ body {
     color: var(--slate-500);
 }
 
-#start .content .top {
+#tela-inicial .content .top {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -188,28 +214,28 @@ body {
     gap: 5px;
 }
 
-#start .content .top img {
+#tela-inicial .content .top img {
     width: 50%;
 }
 
-#start .content .top h2 {
+#tela-inicial .content .top h2 {
     /* nao tem a cor dos textos amarelos na palheta de cores */
-    color: rgba(202, 202, 5, 0.934);
+    color: var(--indigo-500);
     font-size: 2rem;
 }
 
-#start .content .bottom {
+#tela-inicial .content .bottom {
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 10px;
 }
 
-.ganhou {
+#tela-final {
     display: none;
 }
 
-.vitoria .ganhou {
+.vitoria #tela-final {
     position: absolute;
     height: 100vh;
     width: 100vw;
@@ -219,25 +245,53 @@ body {
     background-color: rgba(0, 0, 0, 0.5);
 }
 
-.ganhou .content {
-    width: 50%;
-    height: 70%;
-    background-color: #aed10f;
+#tela-final .content {
+    background-color: var(--slate-800);
     border-radius: 10px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 12px;
+    padding: 10px;
+    color: var(--slate-500);
 }
 
-.ganhou .content button {
+#tela-final .content h2 {
+    /* nao tem a cor na palheta de cores */
+    color: var(--indigo-500);
+}
+
+#pontuacao-ranking {
+    font-size: 2rem;
+    font-weight: bold;
+    /* nao tem a cor */
+    color: var(--emerald-100);
+}
+
+#tabela-ranking {
+    background-color: var(--slate-700);
+    padding: 10px;
+    border-radius: 0.5rem;
+    font-size: 1.3rem;
+}
+
+#tabela-ranking tbody {
+    border: solid 2px var(--slate-600);
+}
+
+#tabela-ranking th,
+#tabela-ranking td {
+    padding: 8px;
+}
+
+#tela-final .content button {
     background-color: #162133;
     color: #f0f0f0;
     border-radius: 3px;
     box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.2);
 }
 
-.ganhou .content button:hover {
+#tela-final .content button:hover {
     box-shadow: 0 0 2px 2px rgba(255, 255, 255, 0.425);
 }

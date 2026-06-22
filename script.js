@@ -3,26 +3,39 @@ const loader = document.getElementById('loader')
 const ladoCima = document.getElementById('resultado-api')
 // const ladoBaixo = document.getElementById('lado-baixo')
 const btnPlayAgn = document.getElementById('play-agn-btn')
+const start = document.getElementById('tela-inicial')
+const inputName = document.getElementById('input-name')
+const btnName = document.getElementById('btn-name')
+const hud = document.getElementById('hud')
+const hudNome = document.getElementById('hud-nome')
+const hudTimer = document.getElementById('hud-timer')
+const hudPares = document.getElementById('hud-pares')
+const pontuacaoRanking = document.getElementById('pontuacao-ranking')
+const tempoRanking = document.getElementById('tempo-ranking')
+const tbody = document.getElementById('tbody-ranking')
 const body = document.body
 let cards = []
 let ultimoCardAberto = null
-let testeVitoria = 0
+let paresCards = 0
 let pessaVirada = false
-const start = document.getElementById('start')
-const inputName = document.getElementById('input-name')
-const btnName = document.getElementById('btn-name')
 let nomePlayer = ''
+let cronometro
+let segundos = 0
 
 
-resetGame()
+
 
 async function resetGame() {
     cards = []
-    testeVitoria = 0
+    paresCards = 0
     ladoCima.innerHTML = ''
+    tbody.innerHTML = ''
     body.classList.remove('vitoria')
     loader.classList.remove('hidden')
-
+    hud.classList.remove('hidden')
+    hudNome.innerText = `${nomePlayer}`
+    hudPares.innerText = `${paresCards} / 10 Pares`
+    timer()
 
     for (let i = 0; i < 10; i++) {
         await requisicao()
@@ -51,20 +64,40 @@ async function resetGame() {
 btnPlayAgn.addEventListener('click', async () => await resetGame())
 
 btnName.addEventListener('click', () => {
-    if (inputName.value){
+    if (inputName.value) {
         nomePlayer = inputName.value
+        resetGame()
         start.classList.add('hidden')
     }
 
 })
 
-function testadorDeVitoria() {
-    testeVitoria++
-    if (testeVitoria == 10) {
+async function testadorDeVitoria() {
+    paresCards++
+    hudPares.innerText = `${paresCards} / 10 Pares`
+    if (paresCards == 10) {
+        pararTimer()
+        await post_ranking(nomePlayer, calcularPontos(segundos), segundos)
+        await criarRanking()
         body.classList.add('vitoria')
-        // console.log('ganohu')
-
     }
+}
+
+async function criarRanking() {
+    pontuacaoRanking.innerText = `${calcularPontos(segundos)} pts`
+    tempoRanking.innerText = `Tempo: ${formatarTempo(segundos)}`
+    const ranking = await get_ranking()
+    console.log(ranking)
+    const medalhas = ['🥇', '🥈', '🥉']
+    ranking.forEach((r, i) => {
+        const destaque = r.nome_jogador === nomePlayer ? 'class="linha-destaque"' : ''
+        tbody.innerHTML += `
+        <tr ${destaque}>
+            <td>${medalhas[i] ?? i + 1}</td>
+            <td>${r.nome_jogador} </td>
+            <td>${r.pontuacao.toLocaleString('pt-BR')} pts</td> <td>${formatarTempo(r.tempo_segundos)}</td>
+        </tr>`
+    })
 }
 
 ladoCima.addEventListener('click', (event) => {
@@ -94,10 +127,37 @@ ladoCima.addEventListener('click', (event) => {
     }
 })
 
+function timer() {
+    clearInterval(cronometro)
+    segundos = 0
+
+    cronometro = setInterval(() => {
+        segundos++
+        hudTimer.innerText = formatarTempo(segundos)
+    }, 1000)
+}
+
+function formatarTempo(s) {
+    const min = Math.floor(s / 60).toString().padStart(2, '0')
+
+    const sec = (s % 60).toString().padStart(2, '0')
+
+    return `${min}:${sec}`
+}
+
+function pararTimer() {
+    clearInterval(cronometro)
+    return segundos
+}
+
+function calcularPontos(s) {
+    const pontuacao = Math.max(0, Math.floor(5000 - (s * 10)))
+    return pontuacao
+}
 
 async function requisicao() {
     try {
-        const idAleatorio = Math.floor(Math.random() * 1025) + 1
+        const idAleatorio = Math.floor(Math.random() * 151) + 1
 
         const resposta = await fetch(`https://pokeapi.co/api/v2/pokemon/${idAleatorio}`)
 
