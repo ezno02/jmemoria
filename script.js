@@ -33,8 +33,8 @@ async function resetGame() {
     body.classList.remove('vitoria')
     loader.classList.remove('hidden')
     hud.classList.remove('hidden')
-    hudNome.innerText = `${nomePlayer}`
-    hudPares.innerText = `${paresCards} / 10 Pares`
+    hudNome.innerText = `👤 ${nomePlayer}`
+    hudPares.innerText = `🏹${paresCards} / 10 Pares`
     timer()
 
     for (let i = 0; i < 10; i++) {
@@ -48,12 +48,17 @@ async function resetGame() {
     cards.forEach((dados) => {
         ladoCima.innerHTML += `
         <div class="char-card card-${dados.id}" data-key="${dados.id}">
-            <img src="${dados.imagem}" alt="${dados.name}">
-            <div class="char-info" data-key="${dados.id}">
-                <h3 class="font-bold text-xl text-lime-400">${dados.name}</h3>
+            <div class="card-inner">
+                <div class="front-card">
+                    <img src="${dados.imagem}" alt="${dados.name}">
+                    <div class="char-info" data-key="${dados.id}">
+                        <h3 class="font-bold text-xl text-lime-400">nome: ${dados.name}</h3>
+                        <h3 class="font-bold text-xl text-lime-400">tipo: ${dados.tipo}</h3>
+                    </div>
+                    <div class="carta-desvirada"></div>
+                </div>
+                <div class="back-card" data-key="${dados.id}"></div>
             </div>
-            <div class="back-card" data-key="${dados.id}"></div>
-            <div class="carta-desvirada"></div>
         </div>`
     })
 
@@ -95,7 +100,8 @@ async function criarRanking() {
         <tr ${destaque}>
             <td>${medalhas[i] ?? i + 1}</td>
             <td>${r.nome_jogador} </td>
-            <td>${r.pontuacao.toLocaleString('pt-BR')} pts</td> <td>${formatarTempo(r.tempo_segundos)}</td>
+            <td>${formatarTempo(r.tempo_segundos)}</td>
+            <td class="pts-ranking">${r.pontuacao.toLocaleString('pt-BR')} pts</td>
         </tr>`
     })
 }
@@ -133,7 +139,7 @@ function timer() {
 
     cronometro = setInterval(() => {
         segundos++
-        hudTimer.innerText = formatarTempo(segundos)
+        hudTimer.innerText = `⏰${formatarTempo(segundos)}`
     }, 1000)
 }
 

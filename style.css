@@ -14,11 +14,14 @@
     /* Tons de Verde (Emerald / Green) */
     --emerald-100: #d1fae5;
     /* Adicionado para o fundo da badge ativa */
+    --emerald-400: #0cc98dea;
     --emerald-600: #059669;
     --emerald-700: #047857;
     --green-600: #16a34a;
     /* Adicionado para toast de sucesso */
 
+
+    --yellow-500: #d4d113;
     /* Tons de Azul e Indigo */
     --indigo-500: #6366f1;
     --indigo-600: #4f46e5;
@@ -89,11 +92,12 @@ body {
     /* height: 50px; */
     background-color: var(--slate-700);
     border-radius: 0.6rem;
-    font-size: 1.4rem;
+    font-size: 1.5rem;
+    font-weight: bold;
 }
 
 #hud-nome {
-    color: var(--emerald-100);
+    color: var(--emerald-400);
 }
 
 #hud-timer {
@@ -134,18 +138,52 @@ body {
 }
 
 .char-card {
-    background-color: #1e293b;
-    border: 3px solid var(--slate-600);
+    background-color: transparent;
+    border: none;
     border-radius: 0.75rem;
-    overflow: hidden;
     color: white;
     text-align: center;
     /* max-width: 300px; */
+    width: 350px;
+    height: 150px;
     margin: 0 auto;
     position: relative;
 }
 
-.char-card img {
+.card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 600ms;
+    transform-style: preserve-3d;
+    border-radius: 0.6rem;
+}
+
+.char-card:has([data-clicked="true"]) .card-inner {
+    transform: rotateY(180deg);
+}
+
+.front-card,
+.back-card {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-radius: 0.6rem;
+}
+
+.front-card {
+    background-color: var(--slate-700);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transform: rotateY(180deg);
+}
+
+.front-card img {
     width: 30%;
     border-radius: 0.6rem;
     padding: 2px;
@@ -157,7 +195,6 @@ body {
 
 .back-card {
     background-color: var(--slate-700);
-    position: absolute;
     top: 0;
     left: 0;
     height: 100%;
@@ -166,7 +203,7 @@ body {
 }
 
 .back-card:hover {
-    background-color: #1fd10f;
+    background-color: var(--emerald-400);
 }
 
 .char-card:has(.carta-revelada) .carta-desvirada {
@@ -177,11 +214,12 @@ body {
     width: 100%;
     background-color: var(--emerald-700);
     border: solid 3px var(--emerald-600);
+    border-radius: 0.6rem;
     transition-duration: 1s;
 }
 
 [data-clicked="true"] {
-    display: none;
+    display: block;
 }
 
 #tela-inicial {
@@ -204,6 +242,7 @@ body {
     padding: 10px;
     background-color: var(--slate-800);
     color: var(--slate-500);
+    padding: 30px;
 }
 
 #tela-inicial .content .top {
@@ -259,7 +298,7 @@ body {
 
 #tela-final .content h2 {
     /* nao tem a cor na palheta de cores */
-    color: var(--indigo-500);
+    color: var(--yellow-500);
 }
 
 #pontuacao-ranking {
@@ -285,6 +324,10 @@ body {
     padding: 8px;
 }
 
+.pts-ranking {
+    color: var(--emerald-400);
+}
+
 #tela-final .content button {
     background-color: #162133;
     color: #f0f0f0;
@@ -294,4 +337,8 @@ body {
 
 #tela-final .content button:hover {
     box-shadow: 0 0 2px 2px rgba(255, 255, 255, 0.425);
+}
+
+.linha-destaque {
+    color: var(--yellow-500);
 }
