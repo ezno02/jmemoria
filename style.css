@@ -206,16 +206,12 @@ body {
     background-color: var(--emerald-400);
 }
 
-.char-card:has(.carta-revelada) .carta-desvirada {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
+.char-card:has(.card-acertada) .card-verso {
     background-color: var(--emerald-700);
     border: solid 3px var(--emerald-600);
-    border-radius: 0.6rem;
-    transition-duration: 1s;
+}
+.char-card:has(.card-acertada) .card-inner {
+    transform: rotateY(0);
 }
 
 [data-clicked="true"] {

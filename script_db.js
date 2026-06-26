@@ -34,7 +34,7 @@ async function executarQueryNeon(querySQL, parametros = []) {
 // read
 export async function buscarLeaderboard() {
     console.log("get pontuacao");
-    const query = 'SELECT * FROM ranking ORDER BY pontuacao DESC LIMIT 4';
+    const query = 'SELECT * FROM ranking ORDER BY pontuacao DESC LIMIT 10';
 
     const linhas = await executarQueryNeon(query);
     return linhas || [];

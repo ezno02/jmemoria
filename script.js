@@ -50,7 +50,6 @@ async function iniciarJogo() {
                         <h3 class="font-bold text-xl text-lime-400">nome: ${dados.name}</h3>
                         <h3 class="font-bold text-xl text-lime-400">tipo: ${dados.tipo}</h3>
                     </div>
-                    <div class="carta-desvirada"></div>
                 </div>
                 <div class="card-verso" data-key="${dados.id}"></div>
             </div>
@@ -110,10 +109,12 @@ ladoCima.addEventListener('click', (event) => {
                 ultimoCardAberto = cardClicado
                 console.log(ultimoCardAberto)
             } else if (ultimoCardAberto.getAttribute('data-key') === cardClicado.getAttribute('data-key')) {
-                ultimoCardAberto.classList.add('carta-revelada')
-                cardClicado.classList.add('carta-revelada')
-                console.log(cardClicado)
-                ultimoCardAberto = null
+                setTimeout(() => {
+                    ultimoCardAberto.classList.add('card-acertada')
+                    cardClicado.classList.add('card-acertada')
+                    console.log(cardClicado)
+                    ultimoCardAberto = null
+                }, 600);
                 verificarVitoria()
             } else {
                 pessaVirada = true
