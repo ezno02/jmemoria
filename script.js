@@ -36,11 +36,7 @@ async function resetGame() {
     hudNome.innerText = `👤 ${nomePlayer}`
     hudPares.innerText = `🏹${paresCards} / 10 Pares`
     timer()
-
-    for (let i = 0; i < 10; i++) {
-        await requisicao()
-    }
-
+    await requisicao()
     cards = [...cards, ...cards].sort(() => Math.random() - 0.5)
 
     // console.log(cards)
@@ -49,7 +45,7 @@ async function resetGame() {
         ladoCima.innerHTML += `
         <div class="char-card card-${dados.id}" data-key="${dados.id}">
             <div class="card-inner">
-                <div class="front-card">
+                <div class="card-frente">
                     <img src="${dados.imagem}" alt="${dados.name}">
                     <div class="char-info" data-key="${dados.id}">
                         <h3 class="font-bold text-xl text-lime-400">nome: ${dados.name}</h3>
@@ -57,7 +53,7 @@ async function resetGame() {
                     </div>
                     <div class="carta-desvirada"></div>
                 </div>
-                <div class="back-card" data-key="${dados.id}"></div>
+                <div class="card-verso" data-key="${dados.id}"></div>
             </div>
         </div>`
     })
@@ -108,8 +104,8 @@ async function criarRanking() {
 
 ladoCima.addEventListener('click', (event) => {
     if (!pessaVirada) {
-        const cardClicado = event.target.closest('.back-card')
-        if (cardClicado.classList == 'back-card') {
+        const cardClicado = event.target.closest('.card-verso')
+        if (cardClicado.classList == 'card-verso') {
             cardClicado.dataset.clicked = true
             if (!ultimoCardAberto) {
                 ultimoCardAberto = cardClicado
@@ -161,30 +157,43 @@ function calcularPontos(s) {
     return pontuacao
 }
 
+function aleatorizarPokemons(quantidade) {
+    const ids = new Set()
+    while (ids.size < quantidade) {
+        ids.add(Math.floor(Math.random() * 151) + 1)
+    }
+    return ids
+}
+
 async function requisicao() {
-    try {
-        const idAleatorio = Math.floor(Math.random() * 151) + 1
 
-        const resposta = await fetch(`https://pokeapi.co/api/v2/pokemon/${idAleatorio}`)
+    const ids = aleatorizarPokemons(10)
 
-        const dados = await resposta.json()
+    for (const id of ids) {
 
-        const pokemon = {
-            id: dados.id,
-            name: dados.name,
-            imagem: dados.sprites.other['official-artwork'].front_default,
-            tipo: dados.types[0].type.name
+        try {
+
+            const resposta = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
+
+            const dados = await resposta.json()
+
+            const pokemon = {
+                id: dados.id,
+                name: dados.name,
+                imagem: dados.sprites.other['official-artwork'].front_default,
+                tipo: dados.types[0].type.name
+            }
+
+            console.log(pokemon)
+
+            cards = [...cards, pokemon]
+
+            // console.log(cards)
+
+        } catch (erro) {
+            loader.classList.add('hidden')
+            ladoCima.innerHTML = '<p class="text-red-500">Erro no portal. Tente novamente!</p>'
+            console.error(erro)
         }
-
-        console.log(pokemon)
-
-        cards = [...cards, pokemon]
-
-        // console.log(cards)
-
-    } catch (erro) {
-        loader.classList.add('hidden')
-        ladoCima.innerHTML = '<p class="text-red-500">Erro no portal. Tente novamente!</p>'
-        console.error(erro)
     }
 }
