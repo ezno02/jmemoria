@@ -22,7 +22,26 @@ let nomePlayer = ''
 let cronometro
 let segundos = 0
 
+// function mostrarToast(mensagem, tipo = 'success') {
+//     const container = document.getElementById('toast-container');
+//     const toast = document.createElement('div');
 
+//     const cores = { success: 'bg-green-600', error: 'bg-rose-600', info: 'bg-blue-600' };
+//     const icones = { success: 'fa-check-circle', error: 'fa-exclamation-triangle', info: 'fa-info-circle' };
+
+//     toast.className = `toast-enter ${cores[tipo]} toast-message`;
+//     toast.innerHTML = `<i class="fas ${icones[tipo]} text-lg"></i> <span>${mensagem}</span>`;
+
+//     container.appendChild(toast);
+
+//     // Remove o toast após 3 segundos
+//     setTimeout(() => {
+//         toast.style.opacity = '0';
+//         toast.style.transform = 'translateX(100%)';
+//         toast.style.transition = 'all 0.3s ease';
+//         setTimeout(() => toast.remove(), 300);
+//     }, 3000);
+// }
 
 async function iniciarJogo() {
     cards = []
@@ -109,11 +128,13 @@ ladoCima.addEventListener('click', (event) => {
                 ultimoCardAberto = cardClicado
                 console.log(ultimoCardAberto)
             } else if (ultimoCardAberto.getAttribute('data-key') === cardClicado.getAttribute('data-key')) {
+                pessaVirada = true
                 setTimeout(() => {
                     ultimoCardAberto.classList.add('card-acertada')
                     cardClicado.classList.add('card-acertada')
                     console.log(cardClicado)
                     ultimoCardAberto = null
+                    pessaVirada = false
                 }, 600);
                 verificarVitoria()
             } else {
