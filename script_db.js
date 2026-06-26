@@ -32,7 +32,7 @@ async function executarQueryNeon(querySQL, parametros = []) {
     }
 }
 // read
-export async function get_ranking() {
+export async function buscarLeaderboard() {
     console.log("get pontuacao");
     const query = 'SELECT * FROM ranking ORDER BY pontuacao DESC LIMIT 4';
 
@@ -41,7 +41,7 @@ export async function get_ranking() {
 }
 
 // create
-export async function post_ranking(nome_jogador, pontuacao, tempo_segundos) {
+export async function salvarPontuacao(nome_jogador, pontuacao, tempo_segundos) {
     console.log("Cadastrando usuário no banco:", { nome_jogador, pontuacao, tempo_segundos });
     const query = 'INSERT INTO ranking (nome_jogador, pontuacao, tempo_segundos) VALUES ($1, $2, $3) RETURNING *';
     const params = [nome_jogador, pontuacao, tempo_segundos];

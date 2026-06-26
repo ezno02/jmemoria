@@ -1,4 +1,4 @@
-import { get_ranking, post_ranking } from './script_db.js';
+import { buscarLeaderboard, salvarPontuacao } from './script_db.js';
 const loader = document.getElementById('loader')
 const ladoCima = document.getElementById('resultado-api')
 // const ladoBaixo = document.getElementById('lado-baixo')
@@ -24,8 +24,7 @@ let segundos = 0
 
 
 
-
-async function resetGame() {
+async function iniciarJogo() {
     cards = []
     paresCards = 0
     ladoCima.innerHTML = ''
@@ -62,23 +61,23 @@ async function resetGame() {
     loader.classList.add('hidden')
 }
 
-btnPlayAgn.addEventListener('click', async () => await resetGame())
+btnPlayAgn.addEventListener('click', async () => await iniciarJogo())
 
 btnName.addEventListener('click', () => {
     if (inputName.value) {
         nomePlayer = inputName.value
-        resetGame()
+        iniciarJogo()
         start.classList.add('hidden')
     }
 
 })
 
-async function testadorDeVitoria() {
+async function verificarVitoria() {
     paresCards++
     hudPares.innerText = `${paresCards} / 10 Pares`
     if (paresCards == 10) {
         pararTimer()
-        await post_ranking(nomePlayer, calcularPontos(segundos), segundos)
+        await salvarPontuacao(nomePlayer, calcularPontos(segundos), segundos)
         await criarRanking()
         body.classList.add('vitoria')
     }
@@ -87,7 +86,7 @@ async function testadorDeVitoria() {
 async function criarRanking() {
     pontuacaoRanking.innerText = `${calcularPontos(segundos)} pts`
     tempoRanking.innerText = `Tempo: ${formatarTempo(segundos)}`
-    const ranking = await get_ranking()
+    const ranking = await buscarLeaderboard()
     console.log(ranking)
     const medalhas = ['🥇', '🥈', '🥉']
     ranking.forEach((r, i) => {
@@ -115,7 +114,7 @@ ladoCima.addEventListener('click', (event) => {
                 cardClicado.classList.add('carta-revelada')
                 console.log(cardClicado)
                 ultimoCardAberto = null
-                testadorDeVitoria()
+                verificarVitoria()
             } else {
                 pessaVirada = true
                 setTimeout(() => {
